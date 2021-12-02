@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lex chatbot creation from Amplify CLI",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"interactions-Lex\",\"metadata\":{}}",
   "Parameters": {
     "authRoleName": {
       "Type": "String"
@@ -12,6 +12,12 @@
       "Type": "String"
     },
     "env": {
+      "Type": "String"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "s3Key": {
       "Type": "String"
     }
   },
@@ -133,11 +139,15 @@
             }
           }
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": "300",
         "Code": {
-          "S3Bucket": "amplify-awstoolkit-dev-94132-deployment",
-          "S3Key": "amplify-builds/chatbot-6371514267682f4e4834-build.zip"
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         }
       }
     },

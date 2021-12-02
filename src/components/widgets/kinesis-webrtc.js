@@ -816,7 +816,7 @@ const VideoPlayers = view(() => {
           value={state.receivedMessages}
           fullWidth={true}
           multiline={true}
-          rowsMax={10}
+          maxRows={10}
           size='small'
           disabled={true}
           variant="outlined"

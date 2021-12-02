@@ -1,14 +1,16 @@
 {
+  "version": "1",
+  "cognitoConfig": {
     "identityPoolName": "awstoolkitd5af8046_identitypool_d5af8046",
     "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "awstood5af8046",
     "userPoolName": "awstoolkitd5af8046_userpool_d5af8046",
     "autoVerifiedAttributes": [
-        "email"
+      "email"
     ],
     "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-        "SMS Text Message"
+      "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
@@ -18,47 +20,51 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+      "email"
     ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "email"
+      "email"
     ],
     "userpoolClientReadAttributes": [
-        "email",
-        "custom:iotPolicyIsAttached"
+      "email",
+      "custom:iotPolicyIsAttached"
     ],
     "userpoolClientLambdaRole": "awstood5af8046_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "d5af8046",
-    "resourceName": "awstoolkitd5af8046d5af8046",
     "authSelections": "identityPoolAndUserPool",
-    "authRoleArn": {
-        "Fn::GetAtt": [
-            "AuthRole",
-            "Arn"
-        ]
-    },
-    "unauthRoleArn": {
-        "Fn::GetAtt": [
-            "UnauthRole",
-            "Arn"
-        ]
-    },
+    "resourceName": "awstoolkitd5af8046d5af8046",
+    "serviceName": "Cognito",
     "useDefault": "manual",
-    "thirdPartyAuth": false,
+    "sharedId": "d5af8046",
+    "userPoolGroupList": [
+      "admin"
+    ],
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": "{}",
     "hostedUI": false,
-    "userPoolGroupList": [
-        "admin"
-    ],
-    "serviceName": "Cognito",
-    "parentStack": {
-        "Ref": "AWS::StackId"
+    "thirdPartyAuth": false,
+    "triggers": {},
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
     },
-    "permissions": [],
-    "dependsOn": []
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": false,
+    "useEnabledMfas": false,
+    "dependsOn": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
+  }
 }

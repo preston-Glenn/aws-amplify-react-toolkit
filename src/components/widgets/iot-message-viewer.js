@@ -40,7 +40,7 @@ const EventViewer = (props) => {
     async function setup() {
       await getIoTEndpoint();
       await configurePubSub();
-      await attachIoTPolicyToUser();
+      // await attachIoTPolicyToUser();
     }
     setup();
     updateFormValuesFromLocalStorage();
@@ -91,7 +91,7 @@ const EventViewer = (props) => {
           value={state.messages.join('')}
           fullWidth={true}
           multiline={true}
-          rowsMax={30}
+          maxRows={30}
           size='small'
           disabled={true}
           variant="outlined"
@@ -112,8 +112,11 @@ async function getIoTEndpoint() {
     region: awsExports.aws_project_region,
     credentials: Auth.essentialCredentials(credentials)
   });
-  const response = await iot.describeEndpoint({endpointType: 'iot:Data-ATS'}).promise();
-  state.iotEndpoint = `wss://${response.endpointAddress}/mqtt`
+  // const response = await iot.describeEndpoint({endpointType: 'iot:Data-ATS'}).promise();
+  // state.iotEndpoint = `wss://${response.endpointAddress}/mqtt`
+  state.iotEndpoint = `wss://a1fs6jiodvpd9q-ats.iot.us-east-2.amazonaws.com/mqtt`
+
+
   console.log(`Your IoT Endpoint is:\n ${state.iotEndpoint}`);
 
 }

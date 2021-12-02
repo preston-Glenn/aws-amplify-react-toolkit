@@ -188,7 +188,7 @@ const SubmissionForm = view(() => {
         value={state.sql} 
         fullWidth={true}
         multiline={true}
-        rowsMax={10}
+        maxRows={10}
         size='small'
       />
       <br/><br/>

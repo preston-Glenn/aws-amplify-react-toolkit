@@ -11,7 +11,8 @@ const state = store({
   idToken: {},
   refreshToken: {},
   accessToken: {},
-  currentUserInfo: {}
+  currentUserInfo: {},
+  newToken: {}
 });
 
 
@@ -26,6 +27,11 @@ const UserInfo = view(() => {
     Auth.currentUserInfo({bypassCache: true})
     .then(data => {
       state.currentUserInfo = data;
+    });
+
+    Auth.currentAuthenticatedUser({bypassCache: true})
+    .then(data => {
+      state.newToken = data;
     });
 
     Auth.currentSession({bypassCache: true})
@@ -54,6 +60,10 @@ const UserInfo = view(() => {
       <br/>
       <h3>Amplify.currentSession().getAccessToken().getRefreshToken():</h3>
       <JsonViewer jsonObject={state.refreshToken} collapsed={15} />
+      <br/>
+
+      <h3>Amplify.currentSession().getAccessToken().getRefreshToken():</h3>
+      <JsonViewer jsonObject={state.newToken} collapsed={15} />
       <br/>
     </Widget>
   );
