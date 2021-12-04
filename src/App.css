@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+
+.app-wrapper{
+  background-image: url('antique-cafe-bg-01.jpg');
+  background-repeat: no-repeat;
+  background-clip: border-box;  
+  background-size: cover;
+  height: 1064px;
+}
+

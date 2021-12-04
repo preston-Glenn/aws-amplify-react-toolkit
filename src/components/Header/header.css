@@ -1,0 +1,9 @@
+.header-wrapper{
+  height: 48px;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
+  --tw-bg-opacity: 0.7;
+}
+
+.right-header-item{
+    float: right;
+}
