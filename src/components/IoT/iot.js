@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const LOCAL_STORAGE_KEY = 'iot-widget';
 
-// TODO on boot up pind get --> get/accepted
+// TODO change topics to raspberrypi device name
 
 let UNAUTHED = 'UNAUTHORIZED'
 let WAITING  = 'WAITING'
@@ -24,10 +24,11 @@ const state = store({
   iotPolicy: 'amplify-toolkit-iot-message-viewer',     // This policy is created by this Amplify project; you don't need to change this unless you want to use a different policy.  
   iotEndpoint: null,              // We retrieve this when the component first loads
   messages: [],
-  subscribedTopic: '$aws/things/MyIotThing/shadow/update/accepted',
-  publishTopic: '$aws/things/MyIotThing/shadow/update',
+  subscribedTopic: '$aws/things/RaspberryPi/shadow/update/accepted',
+  publishTopic: '$aws/things/RaspberryPi/shadow/update',
   subscribedTopics: [],
-  subscriptions: [],
+  subscription: null,
+  get_subscription: null,
   iotProviderConfigured: false,
   drinks: ['Spritzer', 'Coke', 'Pepsi', 'Water'],
   device_state: {
@@ -39,7 +40,7 @@ const state = store({
 });
 
  
-
+let count = 0;
 
 
 
@@ -55,6 +56,8 @@ const EventViewer = (props) => {
       await getIoTEndpoint();
       await configurePubSub();
       subscribeToTopic();
+      // subscribeToGET();
+      // PubSub.publish('$aws/things/RaspberryPi/shadow/get', {msg:''});
       // await attachIoTPolicyToUser();
     }
     setup();
@@ -203,6 +206,40 @@ function subscribeToTopic() {
   
 }
 
+function subscribeToGET() {
+  
+  state.get_subscription = PubSub.subscribe('$aws/things/RaspberryPi/shadow/get/accepted').subscribe({
+    next: data => receivedGetMessage(data),
+    error: error => console.error(error),
+    close: () => console.log('Done'),
+  });
+  state.isSubscribed = true;
+  console.log(`Subscribed to IoT topic $aws/things/RaspberryPi/shadow/get/accepted`);
+  
+}
+
+function receivedGetMessage(data){
+  if(count === 0){
+    try{
+      // Received messages contain the topic name in a Symbol that we have to decode: 
+      const symbolKey = Reflect.ownKeys(data.value).find(key => key.toString() === 'Symbol(topic)');
+      const publishedTopic = data.value[symbolKey];
+      const message = JSON.stringify(data.value, null, 2);
+
+      console.log(`Message received on ${publishedTopic}:\n ${message}`);
+      state.device_state.status = data.value.state.reported.status
+      state.device_state.authorized = data.value.state.reported.auth
+      state.device_state.drink = data.value.state.reported.drink
+      state.device_state.desired_drink = data.value.state.reported.desired_drink
+    } catch(e){
+      console.log(e,data)
+    }
+    count++;
+  } else {
+    console.log("already received")
+  }
+}
+
 //------------------------------------------------------------------------------
 function sendDrinkRequest(drink) {
   // Fired when user clicks the publish button:
@@ -212,7 +249,9 @@ function sendDrinkRequest(drink) {
     PubSub.publish(state.publishTopic, {
       state: {
         desired: {
-          drink: drink
+          drink: drink,
+          auth: state.device_state.authorized,
+          status: state.device_state.status
         }
     }
     });
@@ -224,10 +263,10 @@ function sendDrinkRequest(drink) {
 
 function convertParamsToText(PARAM){
   switch(PARAM){
-    case UNAUTHED: return 'You have not been authenticated, please use the camera to authenticate first.'
+    case UNAUTHED : return 'You have not been authenticated, please use the camera to authenticate first.'
     case WAITING  : return 'Please select the drink you would like made.'
     case MAKING   : return 'The Mixer is making your '+state.device_state.drink+' for you'
-    case FINISHED : return 'The Mixer is finished making you a '+state.device_state.drink+'.'
+    case FINISHED : return 'The Mixer finished making your '+state.device_state.drink+'.'
     default: 
       state.device_state.authorized = false
       state.device_state.status = UNAUTHED
