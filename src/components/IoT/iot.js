@@ -30,7 +30,7 @@ const state = store({
   subscription: null,
   get_subscription: null,
   iotProviderConfigured: false,
-  drinks: ['Spritzer', 'Coke', 'Pepsi', 'Water'],
+  drinks: ['Spritzer', 'Sprite', 'Orange Juice', 'Water'],
   device_state: {
     drink: "",
     status: UNAUTHED,
